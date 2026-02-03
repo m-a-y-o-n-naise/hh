@@ -1,0 +1,15 @@
+playwright
+pytest
+requests
+
+# Зависимости для работы
+pytest-playwright
+pytest-html
+pytest-xdist
+allure-pytest
+
+# Вспомогательные библиотеки
+python-dotenv
+pyyaml
+jsonschema
+faker
