@@ -18,11 +18,11 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope='class')
 def browser(request) -> Page:
-    playwright = sync_playwright().start()
-    if request.config.getoption("bn") == 'remote_chrome':
-        browser = get_remote_chrome(playwright, request)
+    playwright = sync_playwright().start() #  Запуск Playwright
+    if request.config.getoption("bn") == 'remote_chrome': #  Проверка параметра --bn из командной строки
+        browser = get_remote_chrome(playwright, request) #  Вызов функции для создания удалённого Chrome
         context = get_context(browser, request, 'remote')
-        page_data = context.new_page()
+        page_data = context.new_page() #  Создание новой вкладки
     elif request.config.getoption("bn") == 'firefox':
         browser = get_firefox_browser(playwright, request)
         context = get_context(browser, request, 'local')
@@ -35,18 +35,18 @@ def browser(request) -> Page:
         browser = get_chrome_browser(playwright, request)
         context = get_context(browser, request, 'local')
         page_data = context.new_page()
-    yield page_data
+    yield page_data #  Возврат страницы тестам. После тестов выполняется код ниже
     for context in browser.contexts:
-        context.close()
-    browser.close()
-    playwright.stop()
+        context.close() #  Очистка: закрытие контекстов
+    browser.close() #  Очистка: закрытие браузера
+    playwright.stop() #  Очистка: остановка Playwright
 
 
 def get_firefox_browser(playwright, request) -> Browser:
     return playwright.firefox.launch(
         headless=request.config.getoption("h"),
         slow_mo=request.config.getoption("slow"),
-    )
+    ) #  Функция запуска Firefox с параметрами headless и slow_mo
 
 
 def get_chrome_browser(playwright, request) -> Browser:
@@ -68,10 +68,10 @@ def get_context(browser, request, start) -> BrowserContext:
         context = browser.new_context(
             no_viewport=True,
             locale=request.config.getoption('l')
-        )
+        ) # no_viewport=True — окно на весь экран, locale — язык интерфейса
         context.set_default_timeout(
             timeout=request.config.getoption('t')
-        )
+        ) #  Установка таймаута по умолчанию для ожиданий
         # context.add_cookies([{'url': 'https://example.ru', 'name': 'ab_test', 'value': 'd'}]) добавляем куки, если нужны
         return context
 
@@ -90,4 +90,4 @@ def get_context(browser, request, start) -> BrowserContext:
 
 @pytest.fixture(scope="function")
 def return_back(browser):
-    browser.go_back()
+    browser.go_back() #  Фикстура возврата на предыдущую страницу
