@@ -6,5 +6,6 @@ load_dotenv() #  Это нужно, чтобы переменные окруже
 # для запуска через CI переменные будут храниться и подтягиваться из git-secrets.
 
 pytest_plugins = [
-    'fixtures.page'
+    'fixtures.page',
+    'fixtures.user_auth'
 ]
