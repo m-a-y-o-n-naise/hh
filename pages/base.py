@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, TimeoutError, Response
+from playwright.sync_api import Page, TimeoutError, Response, expect
 from data.environment import host
 
 

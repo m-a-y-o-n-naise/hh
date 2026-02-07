@@ -1,6 +1,6 @@
 import pytest
 from playwright.sync_api import Browser, BrowserContext, Page, sync_playwright
-import os
+#  import os - для токена
 
 
 
@@ -66,7 +66,7 @@ def get_remote_chrome(playwright, request) -> Browser:
 def get_context(browser, request, start) -> BrowserContext:
     if start == 'local':
         context = browser.new_context(
-            no_viewport=True,
+            viewport=None,
             locale=request.config.getoption('l')
         ) # no_viewport=True — окно на весь экран, locale — язык интерфейса
         context.set_default_timeout(
@@ -77,7 +77,7 @@ def get_context(browser, request, start) -> BrowserContext:
 
     elif start == 'remote':
         context = browser.new_context(
-            viewport=request.config.getoption('s'),
+            viewport=request.config.getoption('s'), #  Удалённый режим с размером
             locale=request.config.getoption('l')
         )
         context.set_default_timeout(
@@ -85,6 +85,8 @@ def get_context(browser, request, start) -> BrowserContext:
         )
         # context.add_cookies([{'url': 'https://example.ru', 'name': 'ab_test', 'value': 'd'}]) добавляем куки, если нужны
         return context
+    else:
+        raise ValueError(f"Invalid start value: {start}. Use 'local' or 'remote'")
 
 
 

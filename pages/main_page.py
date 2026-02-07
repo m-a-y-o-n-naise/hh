@@ -9,7 +9,7 @@ class Main(Base):
         super().__init__(page)
         self.assertion = Assertions(page)
 
-    def user_login(self):
+    def user_login(self)-> None:
         self.open("") #  передача "" означает, что мы не передаем никакой дополнительный uri к базовому url. Мы просто открываем базовый url
         self.input(Auth.USERNAME_INPUT, Constants.login)
         self.input(Auth.PASSWORD_INPUT, Constants.password)
